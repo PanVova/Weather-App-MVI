@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapi.App
+import com.example.weatherapi.R
 import com.example.weatherapi.data.model.WeatherCity
 import com.example.weatherapi.databinding.FragmentCityBinding
+import com.example.weatherapi.presentation.search.SearchEpoxyController
 import com.example.weatherapi.utils.Constants
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -20,7 +23,8 @@ class CityFragment : Fragment() {
     @Inject
     protected lateinit var viewModel: CityViewModel
     private lateinit var binding: FragmentCityBinding
-    private lateinit var cityAdapter: CityAdapter
+
+    private val epoxyController = CityEpoxyController()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,15 +51,11 @@ class CityFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        cityAdapter = CityAdapter()
-        with(binding) {
-            weatherRecyclerView.layoutManager = LinearLayoutManager(context)
-            weatherRecyclerView.adapter = cityAdapter
-        }
+        binding.weatherRecyclerView.setControllerAndBuildModels(epoxyController)
     }
 
     private fun onCityLoad(weatherCity: WeatherCity) {
         binding.cityName.text = weatherCity.title
-        cityAdapter.setData(weatherCity.consolidated_weather)
+        epoxyController.days = weatherCity.consolidated_weather
     }
 }

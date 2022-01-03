@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapi.R
 import com.example.weatherapi.data.model.Day
 import com.example.weatherapi.databinding.WeatherDayItemBinding
+import com.example.weatherapi.utils.setImage
 
 
 class CityAdapter() : RecyclerView.Adapter<CityAdapter.ViewHolder>() {
@@ -46,22 +47,7 @@ class CityAdapter() : RecyclerView.Adapter<CityAdapter.ViewHolder>() {
             description.text = day.weatherStateName
             minWeather.text = itemView.context.getString(R.string.minWeather, day.minTemp)
             maxWeather.text = itemView.context.getString(R.string.maxWeather, day.maxTemp)
-            image.setImageResource(setImage(day.weatherStateAbbr))
-        }
-    }
-
-    fun setImage(state: String): Int {
-        return when (state) {
-            "sn" -> R.drawable.icon_sn
-            "sl" -> R.drawable.icon_sl
-            "t" -> R.drawable.icon_t
-            "hr" -> R.drawable.icon_hr
-            "lr" -> R.drawable.icon_lr
-            "s" -> R.drawable.icon_s
-            "hc" -> R.drawable.icon_hc
-            "lc" -> R.drawable.icon_lc
-            "c" -> R.drawable.icon_c
-            else -> R.drawable.icon_sn
+            image.setImage(day.weatherStateAbbr)
         }
     }
 }
