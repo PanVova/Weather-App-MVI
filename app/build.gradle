@@ -1,10 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+kapt {
+    correctErrorTypes = true
+}
 
 android {
     compileSdk 31
@@ -87,4 +89,10 @@ dependencies {
 
     // Timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    def epoxyVersion = "5.0.0-beta05"
+
+    implementation "com.airbnb.android:epoxy:$epoxyVersion"
+    // Add the annotation processor if you are using Epoxy's annotations (recommended)
+    annotationProcessor "com.airbnb.android:epoxy-processor:$epoxyVersion"
 }
