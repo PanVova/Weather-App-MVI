@@ -10,7 +10,7 @@ import com.example.weatherapi.data.model.City
 import com.example.weatherapi.databinding.SearchItemBinding
 import com.example.weatherapi.utils.ViewBindingKotlinModel
 
-class CityEpoxyController(private val clickListener: (City) -> Unit) : EpoxyController() {
+class SearchEpoxyController(private val clickListener: (City) -> Unit) : EpoxyController() {
 
     var cities: List<City> = listOf()
         set(value) {
@@ -28,15 +28,11 @@ class CityEpoxyController(private val clickListener: (City) -> Unit) : EpoxyCont
         buildCity()
     }
 
-    fun buildCity(){
+    private fun buildCity(){
         cities.mapIndexed { index, city ->
-            CityEpoxyModel(
-                city,
-                searchText
-            ) {
+            CityEpoxyModel(city, searchText) {
                 clickListener.invoke(it)
-            }.id("search_item$index")
-                .addTo(this)
+            }.id("search_item$index").addTo(this)
         }
     }
 

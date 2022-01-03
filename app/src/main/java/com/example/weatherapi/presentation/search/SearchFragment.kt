@@ -21,7 +21,7 @@ class SearchFragment : Fragment() {
     protected lateinit var viewModel: SearchViewModel
     private lateinit var binding: FragmentSearchBinding
 
-    private val epoxyController = CityEpoxyController() {
+    private val epoxyController = SearchEpoxyController() {
         val bundle = Bundle().apply { putInt(Constants.CITY_ID, it.woeid) }
         findNavController().navigate(R.id.searchFragment_cityFragment, bundle)
     }
