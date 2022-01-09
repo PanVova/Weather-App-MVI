@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapi.App
 import com.example.weatherapi.data.model.WeatherCity
 import com.example.weatherapi.databinding.FragmentCityBinding
+import com.example.weatherapi.domain.viewState.State
 import com.example.weatherapi.utils.Constants
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class CityFragment : Fragment() {
@@ -41,8 +40,8 @@ class CityFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.data.observe(viewLifecycleOwner){
-            onCityLoad(it)
+        viewModel.weatherCity.observe(viewLifecycleOwner) { state ->
+            onCityLoad(state)
         }
     }
 
@@ -54,8 +53,16 @@ class CityFragment : Fragment() {
         }
     }
 
-    private fun onCityLoad(weatherCity: WeatherCity) {
-        binding.cityName.text = weatherCity.title
-        cityAdapter.setData(weatherCity.consolidated_weather)
+    private fun onCityLoad(state: State) {
+        when (state) {
+            is State.LoadingState -> Timber.d("loading")
+            is State.DataState -> {
+                val weatherCity = state.data as WeatherCity
+                binding.cityName.text = weatherCity.title
+                cityAdapter.setData(weatherCity.consolidated_weather)
+            }
+            is State.ErrorState -> Timber.e(state.error)
+            is State.EmptyState -> Timber.d(state.empty)
+        }
     }
 }
