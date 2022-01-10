@@ -29,7 +29,7 @@ class SearchViewModel @Inject constructor(
                 }
                 .collect {
                     if (it.isEmpty()) {
-                        cities.value = State.EmptyState("Empty state")
+                        cities.value = State.EmptyState
                     } else {
                         cities.value = State.DataState(it)
                     }

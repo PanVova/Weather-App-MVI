@@ -90,7 +90,7 @@ class SearchFragment : Fragment() {
             is State.LoadingState -> Timber.d("loading")
             is State.DataState -> searchAdapter.setData(state.data as List<City>)
             is State.ErrorState -> Timber.e(state.error)
-            is State.EmptyState -> Timber.d(state.empty)
+            is State.EmptyState -> Timber.d("empty")
         }
     }
 
