@@ -13,7 +13,9 @@ import com.example.weatherapi.App
 import com.example.weatherapi.R
 import com.example.weatherapi.data.model.City
 import com.example.weatherapi.databinding.FragmentSearchBinding
+import com.example.weatherapi.domain.viewState.State
 import com.example.weatherapi.utils.Constants
+import timber.log.Timber
 import javax.inject.Inject
 
 class SearchFragment : Fragment() {
@@ -65,8 +67,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.data.observe(viewLifecycleOwner) {
-            onCitiesLoad(it)
+        viewModel.cities.observe(viewLifecycleOwner) { state ->
+            onCitiesLoad(state)
         }
     }
 
@@ -83,8 +85,13 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun onCitiesLoad(list: List<City>) {
-        searchAdapter.setData(list)
+    private fun onCitiesLoad(state: State) {
+        when (state) {
+            is State.LoadingState -> Timber.d("loading")
+            is State.DataState -> searchAdapter.setData(state.data as List<City>)
+            is State.ErrorState -> Timber.e(state.error)
+            is State.EmptyState -> Timber.d("empty")
+        }
     }
 
 
